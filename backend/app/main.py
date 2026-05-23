@@ -13,13 +13,33 @@ from fastapi.responses import FileResponse
 
 from app.api import auth, dashboard, chambers, skus, imports, analytics, audit
 from app.config import settings
-from app.database import engine
+from app.database import engine, init_db, async_session_factory
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
-    """Lifespan: подключение / отключение БД."""
-    # При старте — движок уже создан в database.py
+    """Lifespan: инициализация БД + seed-пользователь."""
+    # Создаём таблицы (если Alembic ещё не отработал)
+    await init_db()
+
+    # Seed: создаём админа, если нет ни одного пользователя
+    from app.models.user import User
+    from sqlalchemy import select, func
+    import hashlib, uuid as _uuid
+
+    async with async_session_factory() as session:
+        result = await session.execute(select(func.count()).select_from(User))
+        count = result.scalar()
+        if count == 0:
+            session.add(User(
+                id=_uuid.uuid4(),
+                username="admin",
+                password_hash=hashlib.sha256("admin".encode()).hexdigest(),
+                role="admin",
+                is_active=True,
+            ))
+            await session.commit()
+
     yield
     # При завершении — закрываем движок
     await engine.dispose()
