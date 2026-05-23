@@ -27,7 +27,7 @@ services:
     container_name: wms-backend
     restart: unless-stopped
     ports:
-      - "443:8000"
+      - "8000:8000"
     environment:
       DATABASE_URL: postgresql+asyncpg://wms_user:wms_password@db:5432/wms_dashboard
       DATABASE_URL_SYNC: postgresql+psycopg2://wms_user:wms_password@db:5432/wms_dashboard
