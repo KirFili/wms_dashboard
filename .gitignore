@@ -1,0 +1,25 @@
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+*.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+backend/postgres_data/
+
+# Alembic
+backend/alembic/versions/__pycache__/

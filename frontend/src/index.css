@@ -1,0 +1,162 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg-primary: 255 255 255;
+    --color-bg-secondary: 248 250 252;
+    --color-bg-tertiary: 241 245 249;
+    --color-text-primary: 15 23 42;
+    --color-text-secondary: 71 85 105;
+    --color-text-muted: 148 163 184;
+    --color-border: 226 232 240;
+    --color-sidebar-bg: 248 250 252;
+    --color-sidebar-border: 226 232 240;
+    --color-header-bg: 255 255 255;
+    --color-card-bg: 255 255 255;
+    --color-card-border: 226 232 240;
+  }
+
+  .dark {
+    --color-bg-primary: 15 23 42;
+    --color-bg-secondary: 30 41 59;
+    --color-bg-tertiary: 51 65 85;
+    --color-text-primary: 248 250 252;
+    --color-text-secondary: 203 213 225;
+    --color-text-muted: 100 116 139;
+    --color-border: 51 65 85;
+    --color-sidebar-bg: 15 23 42;
+    --color-sidebar-border: 30 41 59;
+    --color-header-bg: 15 23 42;
+    --color-card-bg: 30 41 59;
+    --color-card-border: 51 65 85;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--color-text-muted) / 0.3) transparent;
+  }
+
+  body {
+    @apply antialiased;
+    font-feature-settings: 'tnum' on, 'cv01' on, 'cv03' on;
+  }
+
+  /* Tabular numbers for all tables and KPI values */
+  table,
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Sticky table headers */
+  .sticky-thead th {
+    @apply sticky top-0 z-10;
+  }
+}
+
+@layer components {
+  .kpi-card {
+    @apply rounded-lg border p-4 transition-colors;
+    background-color: rgb(var(--color-card-bg));
+    border-color: rgb(var(--color-card-border));
+  }
+
+  .kpi-value {
+    @apply text-2xl font-bold tabular-nums tracking-tight;
+  }
+
+  .kpi-label {
+    @apply text-xs uppercase tracking-wider font-medium;
+    color: rgb(var(--color-text-muted));
+  }
+
+  .chart-container {
+    @apply rounded-lg border p-4;
+    background-color: rgb(var(--color-card-bg));
+    border-color: rgb(var(--color-card-border));
+  }
+
+  .detail-table {
+    @apply w-full text-sm;
+  }
+
+  .detail-table thead th {
+    @apply sticky top-0 z-10 px-3 py-2 text-left text-xs font-medium uppercase tracking-wider;
+    background-color: rgb(var(--color-bg-tertiary));
+    color: rgb(var(--color-text-secondary));
+  }
+
+  .detail-table tbody td {
+    @apply px-3 py-2 tabular-nums border-b;
+    border-color: rgb(var(--color-border));
+  }
+
+  .detail-table tbody tr:hover {
+    background-color: rgb(var(--color-bg-secondary));
+  }
+
+  .sidebar-link {
+    @apply flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors;
+    color: rgb(var(--color-text-secondary));
+  }
+
+  .sidebar-link:hover {
+    background-color: rgb(var(--color-bg-tertiary));
+    color: rgb(var(--color-text-primary));
+  }
+
+  .sidebar-link.active {
+    @apply font-semibold;
+    background-color: rgb(var(--color-bg-tertiary));
+    color: #2563eb;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors;
+    background-color: #2563eb;
+    color: #ffffff;
+  }
+
+  .btn-primary:hover {
+    background-color: #1d4ed8;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors border;
+    border-color: rgb(var(--color-border));
+    color: rgb(var(--color-text-secondary));
+  }
+
+  .btn-secondary:hover {
+    background-color: rgb(var(--color-bg-tertiary));
+  }
+
+  .status-badge {
+    @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-2xs font-medium;
+  }
+
+  .form-input {
+    @apply block w-full rounded-md border px-3 py-2 text-sm transition-colors outline-none;
+    background-color: rgb(var(--color-card-bg));
+    border-color: rgb(var(--color-border));
+    color: rgb(var(--color-text-primary));
+  }
+
+  .form-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  }
+
+  .form-select {
+    @apply block w-full rounded-md border px-3 py-2 text-sm transition-colors outline-none;
+    background-color: rgb(var(--color-card-bg));
+    border-color: rgb(var(--color-border));
+    color: rgb(var(--color-text-primary));
+  }
+
+  .form-select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  }
+}
