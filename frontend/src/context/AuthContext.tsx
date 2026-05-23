@@ -36,10 +36,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setError(null);
     try {
       const res = await authService.login(data);
-      setToken(res.access_token);
-      setUser(res.user);
-      localStorage.setItem('access_token', res.access_token);
-      localStorage.setItem('user', JSON.stringify(res.user));
+      const token = res.access_token;
+      setToken(token);
+      localStorage.setItem('access_token', token);
+
+      // Загружаем профиль пользователя
+      const u = await authService.getMe();
+      setUser(u);
+      localStorage.setItem('user', JSON.stringify(u));
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Ошибка входа';
       setError(message);
