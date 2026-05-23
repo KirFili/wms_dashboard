@@ -6,7 +6,7 @@ Endpoints: login, logout, me
 from datetime import datetime, timezone
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_db, get_current_user
@@ -20,13 +20,22 @@ router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 @router.post("/login", response_model=TokenResponse)
 async def login(
-    request: LoginRequest,
+    request: Request,
     db: Annotated[AsyncSession, Depends(get_db)],
 ) -> TokenResponse:
-    """Вход в систему: проверка логина/пароля, выдача JWT."""
-    user = await AuthService.authenticate_user(
-        db, request.username, request.password
-    )
+    """Вход в систему: принимает JSON или form-data."""
+    content_type = request.headers.get("content-type", "")
+
+    if "application/json" in content_type:
+        body = await request.json()
+        username = body.get("username", "")
+        password = body.get("password", "")
+    else:
+        form = await request.form()
+        username = form.get("username", "")
+        password = form.get("password", "")
+
+    user = await AuthService.authenticate_user(db, username, password)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
